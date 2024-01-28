@@ -26,6 +26,11 @@ SECRET_KEY = 'django-insecure-^habwps@$p2r)&kneo=6l=0k+8$t%q7q=!8*=!n31h#sh8y6pg
 DEBUG = True
 
 ALLOWED_HOSTS = []
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # Application definition
