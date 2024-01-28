@@ -1,15 +1,15 @@
 import React from 'react';
 
 interface ImageBoxProps {
-    altTexT: string;
+    altText: string;
 }
 
 const ImageBox: React.FC<ImageBoxProps> = ({ altText }) => {
     console.log('rendering imagbox', altText)
     return(
         <div className="m-4 shadow-log broder-4 border-black" style={{ width: '300px', height: '300px' }}>
-            <di
+            <div className="bg-red-500 h-full w-full" aria-label={altText}></div>
         </div>
     )
-    
-    </ImageBoxProps>
+};
+export default ImageBox;
