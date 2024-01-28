@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import myapp 
+from .models import Project 
 
 class Projectserializer(serializers.ModelSerializer):
     class Meta: 
-        model = myapp 
+        model = Project 
         fields ='__all__'
