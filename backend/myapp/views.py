@@ -5,3 +5,4 @@ from .serializers import ProjectSerializer
 # Create your views here.
 class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
