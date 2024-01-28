@@ -14,3 +14,4 @@ class Project(models.Model):
         self.access_password = make_password(raw_password)
     def __str__(self):
         return self.title
+    
