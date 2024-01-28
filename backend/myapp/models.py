@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Project(models.Model):
-    tite
-    script
+    tite = models.CharField(max_length=200)
+    script 
     createor_note
     link 
     password_access 
