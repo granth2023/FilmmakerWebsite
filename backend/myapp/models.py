@@ -9,3 +9,5 @@ class Project(models.Model):
     password_access = models.BooleanField(default=False)
     comprabale_titles = models.TextField()
     access_password = models.CharField(max_length=128, blank=True) 
+    def set_passowrd(self, raw_password):
+        self.access_password = make_password(raw_password)
