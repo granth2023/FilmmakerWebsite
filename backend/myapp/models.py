@@ -12,3 +12,5 @@ class Project(models.Model):
     access_password = models.CharField(max_length=128, blank=True) 
     def set_passowrd(self, raw_password):
         self.access_password = make_password(raw_password)
+    def __str__(self):
+        return self.title
