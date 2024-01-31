@@ -105,3 +105,5 @@ class RSVP(models.Model):
     def __str__(self):
         return f'RSVP by {self.user.usernanme} for {self.event.title} as {self.status}'
 #CL: PSQL -> \c sscc 
+
+#test
