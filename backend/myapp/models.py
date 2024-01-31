@@ -44,3 +44,10 @@ class User(AbstractUser):
         verbose_name_plural = 'users'
         db_table = 'auth_user'
         swappable = 'AUTH_USER_MODEL'
+        
+class Review(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = models.DateTimeField(auto_now_add=True)
