@@ -1,20 +1,14 @@
 from django.shortcuts import get_object_or_404
-from .models import Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
-from .serializers import  ReviewSerializer
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from .models import Movie, Review, MovieCollection
+from .serializers import ReviewSerializer, MovieCollectionSerializer
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 import requests
 from django.conf import settings
-from django.http import JsonResponse
-from django.http import HttpResponse
-
+from django.http import JsonResponse, HttpResponse
 
 def home(request): 
     return HttpResponse("Welcome to my Django App")
-
-# class ProjectList(generics.ListCreateAPIView):
-#     queryset = Project.objects.all()
-#     serializer_class = ProjectSerializer
 
 def search_movie(request, title):
     api_key = settings.OMDB_API_KEY
@@ -22,8 +16,6 @@ def search_movie(request, title):
     response = requests.get(url)
     movie_data = response.json()
     return JsonResponse(movie_data)
-
-
 
 class CreateReviewView(generics.CreateAPIView):
     queryset = Review.objects.all()
@@ -34,3 +26,17 @@ class CreateReviewView(generics.CreateAPIView):
         movie_id = self.kwargs.get('movie_id', None)
         movie = get_object_or_404(Movie, pk=movie_id)
         serializer.save(user=self.request.user, movie=movie)
+
+class MovieCollectionViewSet(viewsets.ModelViewSet):
+    queryset = MovieCollection.objects.all()
+    serializer_class = MovieCollectionSerializer
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [IsAuthenticatedOrReadOnly]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP
+from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP, MovieCollection
 
 # Assuming your User model customization is correct, just correcting the serializer name and fields
 class UserSerializer(serializers.ModelSerializer):
@@ -48,3 +48,10 @@ class RSVPSerializer(serializers.ModelSerializer):
     class Meta:
         model = RSVP
         fields = '__all__'  # Adjusted to include all fields for simplicity
+
+class MovieCollectionSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    
+    class Meta:
+        model = MovieCollection 
+        fields = ['id', 'title', 'description', 'public', 'owner', 'movies', 'created_at', 'updated_at']

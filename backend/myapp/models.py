@@ -55,6 +55,18 @@ class Review(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
     
+class MovieCollection(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    public = models.BooleanField(default=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='movie_collections', on_delete=models.CASCADE)
+    movies = models.ManyToManyField(Movie, related_name='collections')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+    
 class Event(models.Model):
     title = models.CharField(max_length=200)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
@@ -64,6 +76,7 @@ class Event(models.Model):
     attendees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='attended_events')
     location = models.CharField(max_length=200, null=True, blank=True)
     virtual_event_link=models.URLField(max_length=500, null=True, blank=True)
+    collection = models.ForeignKey(MovieCollection, related_name='events', on_delete=models.SET_NULL, null=True, blank=True)
     
 class DiscussionBoard(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -105,7 +118,7 @@ class RSVP(models.Model):
     def __str__(self):
         return f'RSVP by {self.user.usernanme} for {self.event.title} as {self.status}'
     
-class MovieCollection(models.Model):
+
 #CL: PSQL -> \c sscc 
 
 #test
