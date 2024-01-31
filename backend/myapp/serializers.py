@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Review, Event, DiscussionBoard, Comment, Like, RSVP 
+from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP 
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -30,4 +30,9 @@ class DiscussionBoardSerializer(serializers.DicussionBoardSerializer):
 class RSVPSerializer(serializers.RSVPSerializer):
     class Meta: 
         model: RSVP 
+        fields = '__all__'
+        
+class UserSerializer(serializers.UserSerializer):
+    class Meta: 
+        model: User
         fields = '__all__'
