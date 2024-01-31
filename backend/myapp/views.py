@@ -5,6 +5,10 @@ from rest_framework import generics
 import requests
 from django.conf import settings
 from django.http import JsonResponse
+from django.http import HttpResponse
+
+def home(request): 
+    return HttpResponse("Welcome to my Django App")
 
 class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
