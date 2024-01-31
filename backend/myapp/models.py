@@ -73,6 +73,9 @@ class DiscussionBoard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     moderators = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'moderated_boards')
     
+    def __str__(self):
+        return f'Discussion Board for {self.content_object}'
+    
     
 class Comment(models.Model):
     discussion_board = models.ForeignKey(DiscussionBoard, on_delete=models.CASCADE)
@@ -83,14 +86,22 @@ class Comment(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_comments')
     
+    def __str__(self):
+        return f'Comment by {self.user.username}'
+    
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'Like by {self.user.username} on comment {self.comment.id}'
     
 class RSVP(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=[('yes', 'Yes'), ('no', 'No'), ('maybe', 'Maybe')])
     
+    def __str__(self):
+        return f'RSVP by {self.user.usernanme} for {self.event.title} as {self.status}'
 #CL: PSQL -> \c sscc 
