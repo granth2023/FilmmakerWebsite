@@ -51,3 +51,13 @@ class Review(models.Model):
     text = models.TextField()
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
+    
+class Event(models.Model):
+    title = models.CharField(max_length=200)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='hosted_events', on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    invitees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='invited_events')
+    attendees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='attended_events')
+    location = models.CharField(max_length=200, null=True, blank=True)
+    virtual_event_link=models.URLField(max_length=500, null=True, blank=True)
