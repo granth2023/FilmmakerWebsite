@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from .models import Project, Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
-from .serializers import ProjectSerializer, ReviewSerializer
+from .models import Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
+from .serializers import  ReviewSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 import requests
@@ -12,9 +12,9 @@ from django.http import HttpResponse
 def home(request): 
     return HttpResponse("Welcome to my Django App")
 
-class ProjectList(generics.ListCreateAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+# class ProjectList(generics.ListCreateAPIView):
+#     queryset = Project.objects.all()
+#     serializer_class = ProjectSerializer
 
 def search_movie(request, title):
     api_key = settings.OMDB_API_KEY
