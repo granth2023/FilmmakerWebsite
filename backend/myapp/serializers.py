@@ -22,3 +22,7 @@ class EventSerializer(serializers.ModelSerializer):
         model: Event
         fields = '__all__'
         
+class DiscussionBoardSerializer(serializers.DicussionBoardSerializer):
+    class Meta: 
+        model: DiscussionBoard
+        fields = '__all__'
