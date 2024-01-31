@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Project
+from .models import Project, Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
 from .serializers import ProjectSerializer
 from rest_framework import generics
 import requests
@@ -20,3 +20,8 @@ def search_movie(request, title):
     response = requests.get(url)
     movie_data = response.json()
     return JsonResponse(movie_data)
+
+class CreateReviewView(generics.CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
