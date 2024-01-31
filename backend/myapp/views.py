@@ -23,6 +23,8 @@ def search_movie(request, title):
     movie_data = response.json()
     return JsonResponse(movie_data)
 
+
+
 class CreateReviewView(generics.CreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
