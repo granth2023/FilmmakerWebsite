@@ -11,3 +11,9 @@ const Home: React.FC = () => {
 }
 
 export default Home;
+
+export async function getServerSideProps(context){
+    return {
+        props: {}
+    }
+}
