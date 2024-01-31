@@ -22,6 +22,7 @@ urlpatterns = [
 ]
 
 urlpatterns = [ 
+    path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('search-movie/<title>/', search_movie, name='search-movie'),
     ]
