@@ -37,6 +37,9 @@ class Movie(models.Model):
     country = models.CharField(max_length=100)
     poster_url = models.CharField(max_length=500, unique=True)
     
+    def __str__(self):
+        return self.title
+    
 class User(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     class Meta(AbstractUser.Meta): 
