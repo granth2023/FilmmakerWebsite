@@ -36,3 +36,11 @@ class Movie(models.Model):
     plot = models.TextField()
     country = models.CharField(max_length=100)
     poster_url = models.CharField(max_length=500, unique=True)
+    
+class User(AbstractUser):
+    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    class Meta(AbstractUser.Meta): 
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
+        db_table = 'auth_user'
+        swappable = 'AUTH_USER_MODEL'
