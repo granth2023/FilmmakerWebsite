@@ -26,3 +26,8 @@ class DiscussionBoardSerializer(serializers.DicussionBoardSerializer):
     class Meta: 
         model: DiscussionBoard
         fields = '__all__'
+        
+class RSVPSerializer(serializers.RSVPSerializer):
+    class Meta: 
+        model: RSVP 
+        fields = '__all__'
