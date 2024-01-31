@@ -1,55 +1,50 @@
 from rest_framework import serializers
-from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP 
+from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP
 
-
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model = Movie 
-        fields ='__all__'
-        
-class UserSerializer(serializers.UserSerializer):
-    class Meta: 
+# Assuming your User model customization is correct, just correcting the serializer name and fields
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
         model = User
-        fields = ['id', 'username', 'profile_image']
-        
-class ReviewSerializer(serializers.ReviewSerializer):
-    user = UserSerializer(read_only=True) 
-    
-    class Meta: 
-        model = Review 
-        fields = ['id', 'user', 'text', 'rating', 'created_at', 'updated_at']
+        fields = ['id', 'username', 'profile_picture']  # Assuming the field is 'profile_picture'
 
-class MovieSerializer(serializers.MovieSerializer):
-        reviews = ReviewSerializer(many=True, read_only=True)
-        
-        class Meta: 
-            model = Movie
-            fields = '__all__'
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'text', 'rating', 'created_at']
+
+# Corrected base class and included reviews properly
+class MovieSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)  # Ensure your Movie model has a reverse relation to Review that allows this
+    
+    class Meta:
+        model = Movie
+        fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
-    class Meta: 
+    class Meta:
         model = Comment
-        fields = ['id', 'text', 'user', 'created_at']
-        
+        fields = '__all__'  # Adjusted to include all fields for simplicity
+
 class EventSerializer(serializers.ModelSerializer):
-    attendees = UserSerializer(many=True, read_only = True)
-    invitees = UserSerializer(many=True, read_only = True)
+    attendees = UserSerializer(many=True, read_only=True)
+    invitees = UserSerializer(many=True, read_only=True)
     
-    class Meta: 
+    class Meta:
         model = Event
-        fields = ['id', 'title', 'date', 'location']
-        
-class DiscussionBoardSerializer(serializers.DiscussionBoardSerializer):
-    comments = CommentSerializer(many=True, read_only = True)
+        fields = '__all__'  # Adjusted to include all fields for simplicity
+
+class DiscussionBoardSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
     
-    class Meta: 
+    class Meta:
         model = DiscussionBoard
-        fields = '__all__'
-        
-class RSVPSerializer(serializers.RSVPSerializer):
+        fields = '__all__'  # Adjusted to include all fields for simplicity
+
+class RSVPSerializer(serializers.ModelSerializer):
     event = EventSerializer(read_only=True)
     
-    class Meta: 
-        model = RSVP 
-        fields = '__all__'
-        
+    class Meta:
+        model = RSVP
+        fields = '__all__'  # Adjusted to include all fields for simplicity
