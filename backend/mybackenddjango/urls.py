@@ -22,5 +22,6 @@ urlpatterns = [
 ]
 
 urlpatterns = [ 
+    path('', home, name='home'),
     path('search-movie/<title>/', search_movie, name='search-movie'),
     ]
