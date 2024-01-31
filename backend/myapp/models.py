@@ -69,3 +69,13 @@ class DiscussionBoard(models.Model):
     event = models.OneToOneField(Event, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     moderators = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'moderated_boards')
+    
+    
+class Comment(models.Model):
+    discussion_board = models.ForeignKey(DiscussionBoard, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_comments')
