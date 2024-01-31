@@ -56,7 +56,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'mybackend.urls'
+ROOT_URLCONF = 'mybackenddjango.urls'
+WSGI_APPLICATION = 'mybackenddjango.wsgi.application'
 
 TEMPLATES = [
     {
@@ -74,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mybackend.wsgi.application'
+WSGI_APPLICATION = 'mybackenddjango.wsgi.application'
 
 
 # Database
@@ -82,8 +83,12 @@ WSGI_APPLICATION = 'mybackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sscc',
+        'USER': 'granth',
+        'PASSWORD': 'granth',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
