@@ -2,10 +2,12 @@ from django.shortcuts import get_object_or_404
 from .models import Project, Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
 from .serializers import ProjectSerializer, ReviewSerializer
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 import requests
 from django.conf import settings
 from django.http import JsonResponse
 from django.http import HttpResponse
+
 
 def home(request): 
     return HttpResponse("Welcome to my Django App")
@@ -29,4 +31,4 @@ class CreateReviewView(generics.CreateAPIView):
     def perform_create(self, serializer):
         movie_id = self.kwargs.get('movie_id', None)
         movie = get_object_or_404(Movie, pk=movie_id)
-        serializer.save(user=self.request.nuser, movie=movie)
+        serializer.save(user=self.request.user, movie=movie)
