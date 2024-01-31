@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from .models import Project, Movie, Review, Comment, Like, Event, DiscussionBoard, RSVP 
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, ReviewSerializer
 from rest_framework import generics
 import requests
 from django.conf import settings
