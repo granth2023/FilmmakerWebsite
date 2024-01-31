@@ -61,3 +61,11 @@ class Event(models.Model):
     attendees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='attended_events')
     location = models.CharField(max_length=200, null=True, blank=True)
     virtual_event_link=models.URLField(max_length=500, null=True, blank=True)
+    
+class DiscussionBoard(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    event = models.OneToOneField(Event, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    moderators = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'moderated_boards')
