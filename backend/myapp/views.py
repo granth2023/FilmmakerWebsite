@@ -25,3 +25,8 @@ class CreateReviewView(generics.CreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        movie_id = self.kwargs.get('movie_id', None)
+        movie = get_object_or_404(Movie, pk=movie_id)
+        serializer.save(user=self.request.nuser, movie=movie)
