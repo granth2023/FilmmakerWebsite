@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp.views import home, search_movie
+from rest_framework_simplejwt.views import (
+    TokenOBtainPairView,
+    TokenRefreshView,
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
@@ -25,4 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('search-movie/<title>/', search_movie, name='search-movie'),
+    path('api/token/', TokenOBtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     ]
