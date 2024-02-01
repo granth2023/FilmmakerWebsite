@@ -16,7 +16,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 # Corrected base class and included reviews properly
 class MovieSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, read_only=True)  # Ensure your Movie model has a reverse relation to Review that allows this
+    reviews = ReviewSerializer(many=True, read_only=True)  # Ensure your Movie model has a reverse relation to Review that allows 
+    average_rating = serializers.SerializerMethodField() 
+    
+    def get_average_rating(self, movie):
+        reviews = movie.reviews.all()
+        if reviews: 
+            return sum([review.rating for review in reviews]) / reviews.count()
+        return 0
+
     
     class Meta:
         model = Movie
