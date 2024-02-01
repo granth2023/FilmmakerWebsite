@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404
-from .models import Movie, Review, MovieCollection, Event, MovieCollection, DiscussionBoard, Comment, User, RSVP, Like
-from .serializers import (ReviewSerializer, MovieCollectionSerializer, MovieSerializer, MovieCollectionSerializer, DiscussionBoardSerializer CommentSerializer, EventSerializer, RSVPSerializer )
-from rest_framework import generics, viewsets
+from .models import Movie, Review, MovieCollection, Event, DiscussionBoard, Comment, User, RSVP, Like
+from .serializers import (ReviewSerializer, MovieCollectionSerializer, MovieSerializer, 
+                          DiscussionBoardSerializer, CommentSerializer, EventSerializer, 
+                          RSVPSerializer)
+from rest_framework import generics, viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 import requests
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
@@ -47,7 +50,46 @@ class DiscussionBaordViewSet(viewsets.ModelViewSet):
     persmission_classes = [IsAuthenticatedOrReadOnly]
     
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = CommentBoard.objects.all()
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer 
     permission_classes = [IsAuthenticatedOrReadOnly]
+    
+class LikeCreateDestroyView(generics.CreateAPIView, generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        like, created = Like.objects.get_or_create(user=request.user, comment=comment)
+        if created: 
+            return Response(status=status.HTTP_201_CREATED)
+        else: 
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        try: 
+            like = Like.objects.get(user=request.user, comment=comment)
+            like.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Like.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+class RSVPViewSet(viewsets.ModelViewSet):
+    queryset = RSVP.objects.all()
+    serializer_class = RSVPSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+class EventViewSet(viewsets.ModelViewSet):
+    ...
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def attend(self, request, pk=None):
+        event = self.get_object()
+        event.attendees.add(request.user)
+        return Response ({'status': 'attendance confirmed'})
+    
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
     

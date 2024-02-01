@@ -30,10 +30,17 @@ class CommentSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     attendees = UserSerializer(many=True, read_only=True)
     invitees = UserSerializer(many=True, read_only=True)
-    
+    attendee_count = serializers.SerializerMethodField()
+
+    def get_attendee_count(self, obj):
+        return obj.attendees.count()
+
+    # Add other fields or methods as needed
+
     class Meta:
         model = Event
-        fields = '__all__'  # Adjusted to include all fields for simplicity
+        fields = '__all__'
+
 
 class DiscussionBoardSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
@@ -51,6 +58,7 @@ class RSVPSerializer(serializers.ModelSerializer):
 
 class MovieCollectionSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    movies = MovieSerializer(many=True, read_only=True)
     
     class Meta:
         model = MovieCollection 
