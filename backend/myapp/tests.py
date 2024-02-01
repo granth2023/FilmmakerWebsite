@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test import cls
 from .models import Movie, MovieCollection, Event, User, Comment, DiscussionBoard, Like, RSVP, Review
 # Create your tests here.
 
@@ -33,7 +34,7 @@ class MovieCollection(TestCase):
         cls.movie_collection = MovieCollection.objects.create(title="Sci-Fi Collection", description="Sci-Fi Collection", owner=cls.user)
         
     def test_str_representation(self):
-        self.assertEqual(srt(self.movie_collection), "Sci-Fi Collection")
+        self.assertEqual(str(self.movie_collection), "Sci-Fi Collection")
         
 class EventModelTest(TestCase):
     @classmethod
@@ -72,3 +73,16 @@ class LikeModelTest(TestCase):
         
     def test_str_representation(self):
         self.assertEqual(str(self.like), f"like by {cls.user.username} on comment {cls.comment.id}")
+        
+class RSVPModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='rsvp_user', password='12345')
+        cls.event = Event.objects.create(title='Movie Night')
+        cls.rsvp = RSVP.objects.create(event=cls.event, user=cls.user, status='yes')
+        
+    def test_str_representation(self):
+        self.assertEqual(str(self.rsvp), f'rsvp by {cls.user.username}')
+        
+if __name__ == '__main__':
+    TestCase.main()
