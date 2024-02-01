@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from myapp.views import home, search_movie, MovieViewSet, MovieCollectionViewSet, EventViewSet, DiscussionBoardViewSet, CommentViewSet, LikeCreateDestroyView, RSVPViewSet 
+from myapp.views import home, search_movie, MovieViewSet, MovieCollectionViewSet, EventViewSet, DiscussionBoardViewSet, CommentViewSet, RSVPViewSet 
 from rest_framework.routers import DefaultRouter 
 router = DefaultRouter()
 router.register(r'movies', MovieViewSet)
 router.register(r'collections', MovieCollectionViewSet)
 router.register(r'events', EventViewSet)
 router.register(r'comments', CommentViewSet)
-router.register(r'likes', LikeCreateDestroyView, basename='like')
+
 router.register(r'rsvps', RSVPViewSet)
 router.register(r'discussionboards', DiscussionBoardViewSet)
 
