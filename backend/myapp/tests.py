@@ -53,3 +53,22 @@ class DiscussionBoardModelTest(TestCase):
     def test_str_representation(self):
         self.assertEqual(str(self.discussion_board), f"discussion_board for {cls.event}")
         
+class CommentModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user =User.objects.create_user(username='comment_user', password='12345')
+        cls.discussion_board = DiscussionBoard.objects.create() 
+        cls.comment = Comment.objects.create(discussion_board=cls.discussion_board, user=cls.user, text="interesting topic!")
+        
+    def test_str_representation(self):
+        self.assertEqual(str(self.comment), f"comment by {cls.user.username}")
+        
+class LikeModelTest(TestCase):
+    @classmethod
+    def setUptestData(cls):
+        cls.user = User.objects.create_user(username='liker', password='12345')
+        cls.comment = Comment.objects.create(text="interesting topic!")
+        cls.like = Like.objects.create(user=cls.user, comment=cls.comment )
+        
+    def test_str_representation(self):
+        self.assertEqual(str(self.like), f"like by {cls.user.username} on comment {cls.comment.id}")
