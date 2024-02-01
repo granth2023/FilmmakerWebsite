@@ -9,9 +9,15 @@ from rest_framework.response import Response
 import requests
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
+from rest_framework.decorators import action 
 
 def home(request): 
     return HttpResponse("Welcome to my Django App")
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 def search_movie(request, title):
     api_key = settings.OMDB_API_KEY
@@ -80,16 +86,21 @@ class RSVPViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
 class EventViewSet(viewsets.ModelViewSet):
-    ...
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
-    def attend(self, request, pk=None):
-        event = self.get_object()
-        event.attendees.add(request.user)
-        return Response ({'status': 'attendance confirmed'})
-    
-class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def rsvp(self, request, pk=None):
+        pass 
+        # Implementation for RSVPing to an event
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def mark_completed(self, request, pk=None):
+        pass
+        # Implementation for marking an event as completed
+
+    
+
     
     
