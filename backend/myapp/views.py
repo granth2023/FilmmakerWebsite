@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from .models import Movie, Review, MovieCollection
-from .serializers import ReviewSerializer, MovieCollectionSerializer
+from .models import Movie, Review, MovieCollection, Event, MovieCollection, DiscussionBoard, Comment, User, RSVP, Like
+from .serializers import (ReviewSerializer, MovieCollectionSerializer, MovieSerializer, MovieCollectionSerializer, CommentSerializer, EventSerializer, RSVPSerializer)
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 import requests
