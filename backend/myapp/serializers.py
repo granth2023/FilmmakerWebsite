@@ -15,7 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'text', 'rating', 'created_at']
 
 # Corrected base class and included reviews properly
-class MovieSerializer(serializers.ModelSerializer):
+class MovieSerializer(serializers.HyperlinkedModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)  # Ensure your Movie model has a reverse relation to Review that allows 
     average_rating = serializers.SerializerMethodField() 
     

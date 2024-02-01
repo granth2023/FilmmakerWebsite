@@ -11,6 +11,7 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import action 
 from rest_framework import filters 
+from django_filters.rest_framework import DjangoFilterBackend
 
 def home(request): 
     return HttpResponse("Welcome to my Django App")
