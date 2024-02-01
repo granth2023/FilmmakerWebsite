@@ -10,6 +10,7 @@ import requests
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import action 
+from rest_framework import filters 
 
 def home(request): 
     return HttpResponse("Welcome to my Django App")
@@ -18,6 +19,9 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['genre', 'director']
+    search_fields = ['title', 'plot']
 
 def search_movie(request, title):
     api_key = settings.OMDB_API_KEY
