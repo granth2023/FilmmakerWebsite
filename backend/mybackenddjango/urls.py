@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from myapp.views import home, search_movie, MovieViewSet, MovieCollectionViewSet, EventViewSet, DiscussionBaordViewSet, CommentViewSet, LikeCreateDestroyView, RSVPViewSet 
 from rest_framework.routers import DefaultRouter 
+router.register(r'movies', MovieViewSet)
+
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
