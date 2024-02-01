@@ -37,3 +37,19 @@ class MovieCollection(TestCase):
         
 class EventModelTest(TestCase):
     @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='event_host', password='12345')
+        cls.event = Event.objects.create(title="Movie Night", host=cls.user)
+        
+    def test_str_representation(self):
+        self.assertEqual(str(self.event), "Movie Night")
+        
+class DiscussionBoardModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls): 
+        cls.event = Event.objects.create(title="Movie Night")
+        cls.discussion_board = DiscussionBoard.objects.create(event=cls.event)
+        
+    def test_str_representation(self):
+        self.assertEqual(str(self.discussion_board), f"discussion_board for {cls.event}")
+        
