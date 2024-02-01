@@ -5,7 +5,7 @@ from .models import Movie, MovieCollection, Event, User, Comment, DiscussionBoar
 
 
 class MovieModel(TestCase):
-    @classmethod
+    '@classmethod def setUpClass(cls):'
     def setUpTestData(cls):
         
         Movie.objects.create(title='Titanic', year='1997')
@@ -28,7 +28,7 @@ class ReviewModelTest(TestCase):
         
         
 class MovieCollection(TestCase):
-    @classmethod
+    '@classmethod def setUpClass(cls):'
     def setUpTestData(cls): 
         cls.user = User.objects.create_user(username='collection_owner', password='12345')
         cls.movie_collection = MovieCollection.objects.create(title="Sci-Fi Collection", description="Sci-Fi Collection", owner=cls.user)
@@ -37,7 +37,7 @@ class MovieCollection(TestCase):
         self.assertEqual(str(self.movie_collection), "Sci-Fi Collection")
         
 class EventModelTest(TestCase):
-    @classmethod
+    '@classmethod def setUpClass(cls):'
     def setUpTestData(cls):
         cls.user = User.objects.create_user(username='event_host', password='12345')
         cls.event = Event.objects.create(title="Movie Night", host=cls.user)
