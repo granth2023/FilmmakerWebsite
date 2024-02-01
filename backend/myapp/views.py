@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from .models import Movie, Review, MovieCollection, Event, MovieCollection, DiscussionBoard, Comment, User, RSVP, Like
-from .serializers import (ReviewSerializer, MovieCollectionSerializer, MovieSerializer, MovieCollectionSerializer, CommentSerializer, EventSerializer, RSVPSerializer)
+from .serializers import (ReviewSerializer, MovieCollectionSerializer, MovieSerializer, MovieCollectionSerializer, DiscussionBoardSerializer CommentSerializer, EventSerializer, RSVPSerializer )
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 import requests
@@ -40,3 +40,14 @@ class MovieCollectionViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class DiscussionBaordViewSet(viewsets.ModelViewSet):
+    queryset = DiscussionBoard.objects.all()
+    serializer_class = DiscussionBoardSerializer
+    persmission_classes = [IsAuthenticatedOrReadOnly]
+    
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = CommentBoard.objects.all()
+    serializer_class = CommentSerializer 
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
