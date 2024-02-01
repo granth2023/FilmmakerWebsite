@@ -55,7 +55,7 @@ class MovieCollectionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class DiscussionBaordViewSet(viewsets.ModelViewSet):
+class DiscussionBoardViewSet(viewsets.ModelViewSet):
     queryset = DiscussionBoard.objects.all()
     serializer_class = DiscussionBoardSerializer
     persmission_classes = [IsAuthenticatedOrReadOnly]

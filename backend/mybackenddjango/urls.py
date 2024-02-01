@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from myapp.views import home, search_movie, MovieViewSet, MovieCollectionViewSet, EventViewSet, DiscussionBaordViewSet, CommentViewSet, LikeCreateDestroyView, RSVPViewSet 
+from myapp.views import home, search_movie, MovieViewSet, MovieCollectionViewSet, EventViewSet, DiscussionBoardViewSet, CommentViewSet, LikeCreateDestroyView, RSVPViewSet 
 from rest_framework.routers import DefaultRouter 
+router = DefaultRouter()
 router.register(r'movies', MovieViewSet)
 router.register(r'collections', MovieCollectionViewSet)
 router.register(r'events', EventViewSet)
@@ -31,9 +32,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+
 
 urlpatterns = [ 
     path('admin/', admin.site.urls),
@@ -42,4 +41,5 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify', TokenVerifyView.as_view(), name='token_verify'),
-    ]
+    path('api/', include(router.urls)),
+   ]
