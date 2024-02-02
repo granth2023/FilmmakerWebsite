@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
 ]
-AUTH_USER_MODEL = 'myapp.CustomUser'
+AUTH_USER_MODEL = 'myapp.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

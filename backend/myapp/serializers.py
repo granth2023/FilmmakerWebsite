@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Movie, Review, Event, DiscussionBoard, Comment, RSVP, MovieCollection, CustomUser
+from .models import Movie, Review, Event, DiscussionBoard, Comment, RSVP, MovieCollection, User
 from django.conf import settings
 
 # Assuming your User model customization is correct, just correcting the serializer name and fields
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = User
         fields = ['id', 'username', 'profile_picture']  # Assuming the field is 'profile_picture'
 
 class ReviewSerializer(serializers.ModelSerializer):
