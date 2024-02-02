@@ -1,14 +1,15 @@
 from rest_framework import serializers
-from .models import Movie, Review, Event, DiscussionBoard, Comment, User, RSVP, MovieCollection
+from .models import Movie, Review, Event, DiscussionBoard, Comment, RSVP, MovieCollection, CustomUser
+from django.conf import settings
 
 # Assuming your User model customization is correct, just correcting the serializer name and fields
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['id', 'username', 'profile_picture']  # Assuming the field is 'profile_picture'
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = CustomUserSerializer(read_only=True)
     
     class Meta:
         model = Review
@@ -36,8 +37,8 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'  # Adjusted to include all fields for simplicity
 
 class EventSerializer(serializers.ModelSerializer):
-    attendees = UserSerializer(many=True, read_only=True)
-    invitees = UserSerializer(many=True, read_only=True)
+    attendees = CustomUserSerializer(many=True, read_only=True)
+    invitees = CustomUserSerializer(many=True, read_only=True)
     attendee_count = serializers.SerializerMethodField()
 
     def get_attendee_count(self, obj):
