@@ -4,3 +4,10 @@ from .models import Movie, Review, Event
 
 User = get_user_model()
 
+class UserModelTest(TestCase):
+    
+    
+class MovieModelTest(TestCase):
+    
+
+class EventModelTest(TestCase):
