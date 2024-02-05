@@ -20,3 +20,6 @@ class MovieModelTest(TestCase):
     
 
 class EventModelTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(email='user@example.com', password='testpass')
+        Event.objects.create(title="movie Night", host=user)
