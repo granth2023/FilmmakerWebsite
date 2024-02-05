@@ -23,3 +23,7 @@ class EventModelTest(TestCase):
     def setUp(self):
         user = User.objects.create_user(email='user@example.com', password='testpass')
         Event.objects.create(title="movie Night", host=user)
+        
+    def test_event_creation(self):
+        event = Event.objects.get(title="movie Night")
+        self.assertEqual(event.host.email, 'user@example.com')
