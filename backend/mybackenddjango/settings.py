@@ -37,15 +37,14 @@ MEDIA_URL = '/media/'
 # Application definition
 
 INSTALLED_APPS = [
-    'myapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp'
     'rest_framework',
+    'myapp',
     'rest_framework_simplejwt',
 ]
 AUTH_USER_MODEL = 'myapp.User'
