@@ -1,10 +1,23 @@
 from rest_framework import serializers
 from .models import Movie, Review, Event, DiscussionBoard, Comment, RSVP, MovieCollection, User
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.models import User 
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    
+    class Meta: 
+        model = User 
+        fields = ('id', 'username', 'email', 'password')
+        
+    def create(self, validated_data): 
+        user = User.objects.create_user(
+            username=validated_data['username'].
+            email=validated_data['email'].
+            password=validated_data['password']
+        )
+        
+        return user 
     
 
 
@@ -12,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
         model = Review
@@ -40,8 +53,8 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'  # Adjusted to include all fields for simplicity
 
 class EventSerializer(serializers.ModelSerializer):
-    attendees = CustomUserSerializer(many=True, read_only=True)
-    invitees = CustomUserSerializer(many=True, read_only=True)
+    attendees = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    invitees = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     attendee_count = serializers.SerializerMethodField()
 
     def get_attendee_count(self, obj):
