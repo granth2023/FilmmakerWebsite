@@ -42,4 +42,7 @@ urlpatterns = [
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('api/', include(router.urls)),
+    path('users/register/', CreateUserView.as_view(), name='register'),
+    path('users/login/', LoginView.as_view(), name='login'),
+    path('users/token/refresh/', VerifyUserView.as_view(), name='token_refresh')
    ]
