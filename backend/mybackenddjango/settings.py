@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'myapp',
     'rest_framework_simplejwt',
+    'corsheaders'
 ]
 AUTH_USER_MODEL = 'myapp.User'
 
@@ -75,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CookieMiddleware'
 ]
 
 ROOT_URLCONF = 'mybackenddjango.urls'
