@@ -33,20 +33,22 @@ MEDIA_URL = '/media/'
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 # Application definition
 
 INSTALLED_APPS = [
-    'myapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-   
     'rest_framework',
+    'myapp',
     'rest_framework_simplejwt',
+    'corsheaders'
 ]
 AUTH_USER_MODEL = 'myapp.User'
 
@@ -65,6 +67,25 @@ REST_FRAMEWORK = {
         'user': '1000/day'
     }
 }
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CookieMiddleware'
 ]
 
 ROOT_URLCONF = 'mybackenddjango.urls'
