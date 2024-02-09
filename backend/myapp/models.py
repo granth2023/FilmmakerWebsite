@@ -3,17 +3,18 @@ from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.core.validators import MinValueValidator, MaxValueValidator
-
-
-
+from django.core.validators import MinValueValidator, MaxValueValidator, URLValidator
 from django.contrib.auth.models import User
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
 class Profile(models.Model):
     user =  models.OneToOneField(User, on_delete=models.CASCADE)
+    
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created: 
+        Profile.objects.create(user=instance)
+    instance.profile.save()
     
     
 
@@ -102,8 +103,8 @@ class Comment(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     likes = models.ManyToManyField(User, related_name='liked_comments')
     
-    def __str__(self):
-        return f'Comment by {self.user.username}'
+    def get_children(self):
+        return Comment.objects.filter(parent=self) 
     
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -117,6 +118,7 @@ class Like(models.Model):
 class RSVP(models.Model):
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    virtual_event_link = models.URLField(max_length=500, null=True, blank=True, validators=[URLValidator()])
     # other fields...
 
     status = models.CharField(max_length=10, choices=[('yes', 'Yes'), ('no', 'No'), ('maybe', 'Maybe')])
