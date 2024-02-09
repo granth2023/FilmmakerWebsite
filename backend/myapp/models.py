@@ -102,8 +102,8 @@ class Comment(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     likes = models.ManyToManyField(User, related_name='liked_comments')
     
-    def __str__(self):
-        return f'Comment by {self.user.username}'
+    def get_children(self):
+        return Comment.objects.filter(parent=self) 
     
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
