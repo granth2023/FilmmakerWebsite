@@ -14,17 +14,20 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import action 
 from rest_framework import filters 
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.views import APIView
+
 
 # main_app/views.py
 
-from rest_framework import generics, status, permissions # modify these imports to match
+from rest_framework import generics, status, permissions
+from rest_framework.response import Response # modify these imports to match
 ...
 # include the following imports
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 ...
-from .serializers import CatSerializer, FeedingSerializer, ToySerializer, UserSerializer # add the UserSerizlier to the list
+from .serializers import UserSerializer # add the UserSerizlier to the list
 ...
 
 # include the registration, login, and verification views below
