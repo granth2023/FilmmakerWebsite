@@ -28,13 +28,14 @@ class UserAccountTests(APITestCase):
         data = {'username': 'testuser', 'password': 'testpassword'}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue('access', in response.data)
+        self.assertTrue('access' in response.data)
         
 
 class MovieTests(APITestCase):
     
     def setUp(self):
-        
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.force_authenticate(user=self.user)        
         
     def test_create_movie(self):
         
