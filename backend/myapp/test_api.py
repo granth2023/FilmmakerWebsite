@@ -1,71 +1,62 @@
-from rest_framework.test import APITestCase, APIClient 
-from django.urls import reverse 
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User 
+from .models import Movie, Review 
 
-from rest_framework import status  
-from myapp.models import Movie, CustomUser, Event, MovieCollection, DiscussionBoard, MovieCollection, Comment, Like, RSVP
-from rest_framework.authtoken.models import Token  
-from django.contrib.auth import get_user_model
-User = get_user_model()
+class UserAccountTests(APITestCase):
+    
+    def test_user_registration(self):
+        """ 
+        Ensure we can create a new user account 
+        """
+        url = reverse('register')
+        data = {'username': 'testuser', 'email': 'testuser@example.com', 'password': 'testpassword'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue('access' in response.data)
+        self.assertTrue('refrresh' in response.data)    
+    
+    def test_user_login(self):
+        """" 
+        Ensure we cna log a user in 
+        """
+        
+        self.test_user_registration() 
+        
+        url = reverse('login')
+        data = {'username': 'testuser', 'password': 'testpassword'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('access' in response.data)
+        
 
-class APITests(APITestCase):
+class MovieTests(APITestCase):
     
     def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.force_authenticate(user=self.user)        
         
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client= APIClient()
-        self.client.force_authenticate(user=self.user)
-        
-        self.movie = Movie.objects.create(title='Test Movie', year='2024')
-        self.movie_collection = MovieCollection.objects.create(title="test collection", owner = self.user)
-        self.event = Event.objects.create(title='Test event', host=self.user)
-        self.comment = Comment.objects.create(discussion_board_id=1, user=self.user, test="test comment")
-        self.rsvp = RSVP.objects.create(event=self.event, user=self.user, status='yes')
-        
-        
-    def test_movie_list(self):
+    def test_create_movie(self):
+        """"
+        Ensure we can create a new movie object
+        """
         url = reverse('movie-list')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = {'title': 'Test Movie', 'year': '2020', 'genre': 'Drama'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Movie.objects.count(), 1)
+        self.assertEqual(Movie.objects.get().title, 'Test Movie')
+                
+    
+    def test_get_movies(self):
+        """
+        Ensure we cna retrieve movies
+        """
         
-    def test_movie_collection(self):
-        url = reverse('movie-collection')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.test_create_movie()
+        url = reverse('movie-list')
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+        self.assertEqual(len(response.data), 1)
         
-    def test_event_list_get(self):
-        url = reverse('events-list')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)    
-        
-    def test_event_rsvp(self):
-        url = reverse('event-rsvp', kwargs={'pk': self.event.pk})        
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    def test_comment_list_get(self):
-        url = reverse('comment-lists')
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    def test_rsvp_list_get(self):
-        url = reverse('rsvp-list')
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    def test_discussionboard_list_get(self):
-        url = reverse('discussion-board-list')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    def tearDown(self):
-        self.user.delete()
-        self.movie.delete()
-        self.movie_collection.delete()
-        self.event.delete()
-        self.comment.delete()
-        self.rsvp.delete()
-      
-        
-        
-if __name__ == '__main__':
-    APITestCase.main()
