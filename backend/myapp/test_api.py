@@ -38,6 +38,15 @@ class MovieTests(APITestCase):
         self.client.force_authenticate(user=self.user)        
         
     def test_create_movie(self):
-        
+        """"
+        Ensure we can create a new movie object
+        """
+        url = reverse('movie-list')
+        data = {'title': 'Test Movie', 'year': '2020', 'genre': 'Drama'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Movie.objects.count(), 1)
+        self.assertEqual(Movie.objects.get().title, 'Test Movie')
+                
     
     def test_get_movies(self):
