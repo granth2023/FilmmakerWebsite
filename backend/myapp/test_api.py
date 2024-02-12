@@ -18,6 +18,17 @@ class UserAccountTests(APITestCase):
         self.assertTrue('refrresh' in response.data)    
     
     def test_user_login(self):
+        """" 
+        Ensure we cna log a user in 
+        """
+        
+        self.test_user_registration() 
+        
+        url = reverse('login')
+        data = {'username': 'testuser', 'password': 'testpassword'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('access', in response.data)
         
 
 class MovieTests(APITestCase):
