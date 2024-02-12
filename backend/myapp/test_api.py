@@ -14,4 +14,10 @@ class UserAccountTests(APITestCase):
 
 class MovieTests(APITestCase):
     
+    def setUp(self):
+        
+        
+    def test_create_movie(self):
+        
     
+    def test_get_movies(self):
