@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Review, Event, DiscussionBoard, Comment, RSVP, MovieCollection, User
+from django.contrib.auth.password_validation import validate_password
 # from django.conf import settings
 from django.contrib.auth.models import User 
 
@@ -88,3 +89,33 @@ class MovieCollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieCollection 
         fields = ['id', 'title', 'description', 'public', 'owner', 'movies', 'created_at', 'updated_at']
+        
+
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'password2', 'email')
+    
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+        # Add more custom validation based on your requirements
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
