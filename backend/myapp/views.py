@@ -30,6 +30,15 @@ from django.contrib.auth.models import User
 ...
 from .serializers import UserSerializer # add the UserSerizlier to the list
 ...
+from django.http import JsonResponse 
+from .api_client import ThirdPartyAPIClient
+
+def get_resource(request, resource_id):
+    try: 
+        data = ThirdPartyAPIClient.get_resource(resource_id)
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 # include the registration, login, and verification views below
 # User Registration
