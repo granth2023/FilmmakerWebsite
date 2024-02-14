@@ -15,7 +15,9 @@ from rest_framework.decorators import action
 from rest_framework import filters 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 
+from .serializers import UserRegistrationSerializer
 
 # main_app/views.py
 
@@ -29,10 +31,20 @@ from django.contrib.auth.models import User
 ...
 from .serializers import UserSerializer # add the UserSerizlier to the list
 ...
+from django.http import JsonResponse 
+from .api_client import ThirdPartyAPIClient
+
+def get_resource(request, resource_id):
+    try: 
+        data = ThirdPartyAPIClient.get_resource(resource_id)
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 # include the registration, login, and verification views below
 # User Registration
 class CreateUserView(generics.CreateAPIView):
+  permission_classes = [AllowAny]
   queryset = User.objects.all()
   serializer_class = UserSerializer
 
@@ -46,9 +58,17 @@ class CreateUserView(generics.CreateAPIView):
       'user': response.data
     })
 
+class UserRegistrationAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_BAD_REQUEST)
 # User Login
 class LoginView(APIView):
-  permission_classes = [permissions.AllowAny]
+  permission_classes = [AllowAny]
 
   def post(self, request):
     username = request.data.get('username')
@@ -172,5 +192,12 @@ class EventViewSet(viewsets.ModelViewSet):
 
     
 
-    
-    
+
+# In your view
+class UserRegistrationAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

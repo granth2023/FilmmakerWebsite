@@ -46,17 +46,23 @@ class Movie(models.Model):
     country = models.CharField(max_length=100)
     poster_url = models.CharField(max_length=500, unique=True)
     
+    class Meta: 
+        ordering = ['title']
+    
     def __str__(self):
         return self.title
     
 
         
 class Review(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review by {self.user.username} for movie {self.movie.title}'
     
 class MovieCollection(models.Model):
     title = models.CharField(max_length=255)
@@ -124,7 +130,7 @@ class RSVP(models.Model):
     status = models.CharField(max_length=10, choices=[('yes', 'Yes'), ('no', 'No'), ('maybe', 'Maybe')])
     
     def __str__(self):
-        return f'RSVP by {self.user.usernanme} for {self.event.title} as {self.status}'
+        return f'RSVP by {self.user.username} for {self.event.title} as {self.status}'
     
 
 #CL: PSQL -> \c sscc 
