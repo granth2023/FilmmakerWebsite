@@ -3,6 +3,7 @@ import { fetchMovieById } from '../utils/movieService';
 export const getServerSideProps = async ({ params }) => {
     try {
 
-    } catch 
-
-}
+    } catch (error) {
+        return { props: { error: error.message}};
+    }
+};
