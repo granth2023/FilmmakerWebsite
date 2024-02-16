@@ -13,4 +13,10 @@ const MovieDetailPage = ({ movie, error }) => {
     if (error) {
         return <div>Error: {error}</div>
     }
+    return (
+        <div> 
+
+            
+        </div>
+    )
 }
