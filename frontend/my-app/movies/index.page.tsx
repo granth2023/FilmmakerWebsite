@@ -19,3 +19,5 @@ const MoviesPage = () => {
         </div>
     );
 };
+
+export default MoviesPage;
