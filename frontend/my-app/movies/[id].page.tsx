@@ -15,7 +15,7 @@ const MovieDetailPage = ({ movie, error }) => {
     }
     return (
         <div> 
-
+            <h1>{movie.title}</h1>
             
         </div>
     )
