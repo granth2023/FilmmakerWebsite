@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import { fetchMovies } from '../utils/movieService';
 
+interface Movie {
+    id: string;
+    title: string;
+}
+
 const MoviesPage = () => {
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState<Movie[]>([]);
 
     useEffect(() => {
         fetchMovies().then(setMovies).catch(console.error);
