@@ -8,3 +8,9 @@ export const getServerSideProps = async ({ params }) => {
         return { props: { error: error.message}};
     }
 };
+
+const MovieDetailPage = ({ movie, error }) => {
+    if (error) {
+        return <div>Error: {error}</div>
+    }
+}
