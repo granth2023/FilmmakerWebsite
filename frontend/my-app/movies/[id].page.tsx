@@ -1,5 +1,11 @@
-import { fetchMovieById } from '../utils/movieService';
+import { fetchMovie } from '../utils/movieService';
 import { GetServerSideProps } from 'next';
+import { ParsedUrlQuery} from 'querystring';
+
+
+interface IParams extends ParsedUrlQuery {
+    id: string;
+}
 
 interface Movie {
     id: string;
@@ -11,25 +17,26 @@ interface MovieDetailProps {
     error?: string;
 }
 
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    if (typeof params?.id === 'string'){
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { id } = context.params as IParams;
+    
     try {
-        const movie = await fetchMovieById(params.id);
-        return { props: { movie }};
+      const movie = await fetchMovie;
+      return { props: { movie } };
     } catch (error) {
-        return { props: { error: error.message}};
+      return { props: { error: (error as Error).message } };
     }
-};
-};
+  };
 const MovieDetailPage = ({ movie, error }: MovieDetailProps ) => {
     if (error) {
         return <div>Error: {error}</div>
     }
     return (
         <div> 
-            <h1>{movie.title}</h1>
+            <h1>{movie?.title}</h1>
             
         </div>
     )
 }
+
+export default MovieDetailPage;

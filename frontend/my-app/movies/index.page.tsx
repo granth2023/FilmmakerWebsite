@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchMovies } from '../utils/movieService';
+import { fetchMovie } from '../utils/movieService';
 
 interface Movie {
     id: string;
@@ -10,7 +10,7 @@ const MoviesPage = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
 
     useEffect(() => {
-        fetchMovies().then(setMovies).catch(console.error);
+        fetchMovie().then(setMovies).catch(console.error);
     }, []);
 
     return ( 
