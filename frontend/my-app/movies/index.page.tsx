@@ -7,4 +7,7 @@ const MoviesPage = () => {
     useEffect(() => {
         fetchMovies().then(setMovies).catch(console.error);
     }, []);
-    
+
+    return ( 
+        
+    )
